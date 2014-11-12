@@ -1,0 +1,56 @@
+body{
+	background-color:#000000;
+}
+
+a:link, a:visited{
+
+	color:#000000;
+}
+nav {
+	margin:0 auto;
+	max-width:1000px;
+	background-color: #fff;
+	border: 1px solid #dedede;
+	border-radius: 4px;
+	box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);
+	color: #888;
+	display: block;
+	/*margin: 8px 22px 8px 22px;*/
+	overflow: hidden;
+	font-family:arial, sans-serif;
+	width: 100%; 
+	padding:0;
+}
+nav ul{
+	padding:0;
+	list-style:none;
+}
+nav ul li{
+	/*overflow:scroll; */
+}
+/*ul{
+	width:700px;
+}
+nav ul {
+	margin: 0;
+	padding: 0;
+}
+
+	nav ul li {
+		display: inline-block;
+		list-style-type: none;
+		
+		-webkit-transition: all 0.2s;
+		-moz-transition: all 0.2s;
+		-ms-transition: all 0.2s;
+		-o-transition: all 0.2s;
+		transition: all 0.2s; 
+	}
+	
+		nav > ul > li > a {
+			color: #aaa;
+			display: block;
+			line-height: 56px;
+			padding: 0 24px;
+			text-decoration: none;
+		}*/
