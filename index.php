@@ -6,7 +6,7 @@
 	<meta charset=”utf-8”>
 	<title>shrink it test foundation example</title>
 	
-	<link rel="stylesheet" type="text/css" href="styles.css"/>
+	<link rel="stylesheet" type="text/css" href="shrink_it_styles.css"/>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery.shrink_it_nav.js"></script>
 	
@@ -52,20 +52,25 @@
 </script>
 </head>
 <body>
-
+	<div class="">
+	
+	</div>
+	<div id="toggle"></div>
 	<nav id="nav">
 		<ul id="ul1">
 		<?	$count = 0;
 			while($count< 4){
-				echo "<li id='li$count'><a href='#' id='a$count'>test$count</a></li>";
+				echo "<li id='li$count'><a href='#' id='a$count'>test$count</a>\r\n".
+				
+				"<ul id='ul$count'>\r\n<li id='a1$count'><a href='#' >sub1</a></li>\r\n<li id='a2$count'><a href='#' >sub2</a></li>\r\n</ul>\r\n</li>\r\n";
 				$count++;
 			
 			}?>
 		</ul>
-		<ul id="ul1">
+		<ul id="ul2">
 		<?	$count = 0;
 			while($count< 4){
-				echo "<li><a href='#'>test$count</a></li>";
+				echo "<li><a href='#'>test$count</a></li>\r\n";
 				$count++;
 			
 			}?>

@@ -33,6 +33,16 @@
 	var $final_percent_array= new Array();
 	var $child_count=0;
 	var $count_flag= true;
+	var $submenu_count =0;
+	var $child_subtract_count=0;
+	//will create on fly and append class to this one
+	var $submenu_object_array = new Array();
+	var $submenu_object ={
+		menu_id :"",
+		level :0,
+		parent :""
+			
+	}
 	$.fn.shrink_it_nav= function(options){
 		/**************variables****************
 		* level =   under development. Trying to determine best way to implement
@@ -102,32 +112,52 @@
 					$('#'+$object_array[$arr_count]).children().each(function (i, v) {
     					
     					console.log(this + "  current parent object this is here "+ $object_array[$arr_count]);
-    					console.log(i+" : "+ $(v).width());
+    					console.log(i+" : "+ $(v).width() + " "+ $(v).html());
     					
     					if($(this).parent().width()< this.width){
     						$width=$(this).parent().width();
     					}else{
     						$width= this.width;
     					}
-    					console.log($final_percent_array.length+ " ------ "+$arr_count + " ------ "+ $flag+ "---"+($child_count) );
-    					$height_array[$height_count]=$width+":"+this.height;
+    					//count children of navigation so not to be in final count
+    					//if($(v).html().indexOf("ul") >=0 ){
+    					console.log("---------------------- "+$(v).attr("class")+" -------------------");
+    					if($(v).parent().html().indexOf("ul") >=0 ){
+    						console.log("it is here and true");
+    					//if($(v).html().indexOf("sub_class") >=0 ){
+    						
+    						
+    						//$(v).children().each(function(a,b){
+    						
+    							//console.log($(b).text() + " this is the child");
+    							//$child_subtract_count++;
+    						//});
+    						
+    					}else{
     					
     					
-    					if($flag){
+    						console.log($final_percent_array.length+ " ------ "+$arr_count + " ------ "+ $flag+ "---"+($child_count) );
+    						$height_array[$height_count]=$width+":"+this.height;
+    					
+    					
+    						if($flag){
     					
     						
-    						if($final_percent_array.length==($child_count) && $arr_count ==0 && $flag){
+    							if($final_percent_array.length==($child_count) && $arr_count ==0 && $flag){
     							
-    							$flag=false;
-    						}
-    						$final_percent_array[$height_count]= this.height/$width;
-						}
-						$count++;
+    								$flag=false;
+    							}
+    							$final_percent_array[$height_count]= this.height/$width;
+							}
+							$count++;
 						
-						$height_count++;
+							$height_count++;
+							//$height_count = $height_count -($child_subtract_count-1);
+							//$child_subtract_count=0;
+						}
 						
 					});
-			
+				console.log($child_subtract_count+ " here is the final subtract count");
 				$number_children_array[$arr_count]= $count;
 				console.log($("#"+$object_array[$arr_count]).width()+ " <-- object width --> "+$object_array[$arr_count] );
 				
@@ -161,8 +191,12 @@
 		*passed into the $object_array
 		*********************************************************************/
 		function changeSize($the_count){
+					console.log("calling changeSize ------------------- "+ $number_children_array[$the_count] + "  "+ $height_count);
 			
-			
+				//$height_count = $height_count -$child_subtract_count;
+				// $number_children_array[$the_count] =  $number_children_array[$the_count] -$child_subtract_count;
+								//	console.log("calling changeSize ------------------- "+ $number_children_array[$the_count] + "  "+ $height_count);
+
 				$('#'+$object_array[$the_count]).children().each(function () {
     				
 					$percent_count = $height_count -$number_children_array[$the_count];   
@@ -210,11 +244,15 @@
     				//console.log($(this).find("a").attr("id")+ " this is find value");
     				//var el =$(this).find("a").attr("id");
     				var id = $(this).find("a").attr("id");
-    				console.log(id + " ------------------id");
+    				console.log(id + " ------------------id "+ " " + $(this).html() );
     				var el = document.getElementById(id);
-    				//append id to it
+    				//append id to it if null
     				if(el == null){
+    					console.log("el is null baby");
+    					//not sure what I was doing here wasn't really assiging anything
     					$(this).find("a").attr("id","a2"+$count);
+    					//assign id here
+    					//$(this).attr("id","a2"+$count);
     					var el = document.getElementById("a2"+$count);
     				}
     				console.log($(this).width());
@@ -254,9 +292,23 @@
 		*********************************************************************/
 		function childCount(){
 			var $temp_count=0
+			console.log($object_array);
 			while($temp_count < $object_array.length){
-				$('#'+$object_array[$temp_count]).children().each(function () {
+				$('#'+$object_array[$temp_count]).children().each(function (a, b) {
 					//$child_count++;
+					//append class here so we know it's a submenu
+					//console.log(a +" : "+$(b).text());
+					//console.log($(b).parent().parent().attr("id")+ " parent of a parent");
+					//console.log($(b).parent().parent().parent().html()+ " parent of a parent");
+					//console.log($(b).html());
+				if($(b).html().indexOf("ul") >=0 ){
+					$(b).children().each(function(c,d){
+    						
+    							//console.log($(b).text() + " this is the child");
+    							//$child_subtract_count++;
+    							$(d).parent().attr("class","sub_class");
+    				});
+    			}
 					
 				});
 				$temp_count++;
