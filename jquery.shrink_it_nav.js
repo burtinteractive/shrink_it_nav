@@ -35,6 +35,7 @@
 	var $count_flag= true;
 	var $submenu_count =0;
 	var $child_subtract_count=0;
+	
 	//will create on fly and append class to this one
 	var $submenu_object_array = new Array();
 	var $submenu_object ={
@@ -79,10 +80,11 @@
 		var $height_array = new Array();
 		var $number_children_array = new Array();
 		var $height_count = 0;
-		
+		var $parent_count=0;
 		var $text_width_array = new Array();
 		var $text_width_array = settings.text.split(",");
 		var $width=0;
+		var $sub_child=0;
 		//$temp_num=isParent2(5);
 		//console.log($temp_num+ " this is temp num");
 		
@@ -105,14 +107,21 @@
 			$count =0;
 			
 			$arr_count=0;
-		
+			
 			while($arr_count < $object_array.length){	
 			
-			
+					//takes the object passed through function and iterates through it
 					$('#'+$object_array[$arr_count]).children().each(function (i, v) {
     					
     					console.log(this + "  current parent object this is here "+ $object_array[$arr_count]);
     					console.log(i+" : "+ $(v).width() + " "+ $(v).html());
+    					
+    					if(isParent(this)){
+    					
+    						
+    					}else{
+    						$sub_child++;
+    					}
     					
     					if($(this).parent().width()< this.width){
     						$width=$(this).parent().width();
@@ -122,18 +131,11 @@
     					//count children of navigation so not to be in final count
     					//if($(v).html().indexOf("ul") >=0 ){
     					console.log("---------------------- "+$(v).attr("class")+" -------------------");
-    					if($(v).parent().html().indexOf("ul") >=0 ){
-    						console.log("it is here and true");
-    					//if($(v).html().indexOf("sub_class") >=0 ){
-    						
-    						
-    						//$(v).children().each(function(a,b){
-    						
-    							//console.log($(b).text() + " this is the child");
-    							//$child_subtract_count++;
-    						//});
-    						
-    					}else{
+    					
+    					//maybe get rid of this whole thing right here and just subtract the sub navs;
+    					console.log($sub_child+" ------------------sub child");
+    					
+    				
     					
     					
     						console.log($final_percent_array.length+ " ------ "+$arr_count + " ------ "+ $flag+ "---"+($child_count) );
@@ -152,13 +154,12 @@
 							$count++;
 						
 							$height_count++;
-							//$height_count = $height_count -($child_subtract_count-1);
-							//$child_subtract_count=0;
-						}
+							
+					
 						
 					});
 				console.log($child_subtract_count+ " here is the final subtract count");
-				$number_children_array[$arr_count]= $count;
+				$number_children_array[$arr_count]= $count-$sub_child;
 				console.log($("#"+$object_array[$arr_count]).width()+ " <-- object width --> "+$object_array[$arr_count] );
 				
 				if($break_point_array[$arr_count]>= $('#'+$object_array[$arr_count]).width() && $break_point_array[$arr_count] != 0){
@@ -191,6 +192,7 @@
 		*passed into the $object_array
 		*********************************************************************/
 		function changeSize($the_count){
+					
 					console.log("calling changeSize ------------------- "+ $number_children_array[$the_count] + "  "+ $height_count);
 			
 				//$height_count = $height_count -$child_subtract_count;
@@ -229,20 +231,16 @@
     				$count++;
     				//have sizes now get text size
     				var x = $(this).offset();
-    				//console.log($(this).text()+" <-------- "+ $(this).width()+ "   ---- "+ $(this).attr('id')+ " "+ x.left);
     				var text_w = $(this).text();
-    				//console.log(text_w.length+ " <-------  length of string " + $(this).text().clientWidth);
-    				//console.log($("#"+$(this).attr("id")+ " a").attr('id')+" width of text "+$("#"+$(this).attr("id")+ " a").width());
-    				//console.log($(this+"a").width());
+    			
     				$(this).css("font-size",($(this).width()/(text_w.length)));
     				
     				$count2 = 12;
-    				//console.log(this.scrollWidth+ " this is scrollwidth "+ this.offsetWidth + " "+ this.id);
+    			
     				
     				
     				//find link or text. see if it has an id. if no idea assign it one.
-    				//console.log($(this).find("a").attr("id")+ " this is find value");
-    				//var el =$(this).find("a").attr("id");
+    				
     				var id = $(this).find("a").attr("id");
     				console.log(id + " ------------------id "+ " " + $(this).html() );
     				var el = document.getElementById(id);
@@ -260,16 +258,14 @@
     				
     				if(el.scrollWidth< $(this).width()){
     					while(el.scrollWidth< ($(this).width()-10)){
-    						//console.log($count2);
-    						//$(this).css("font-size",$count2+"px");
+    						
     						el.style.fontSize = $count2+"px";
     						$count2++;
     					}
     				}else{
     					$count2=el.scrollWidth;
     					while(($(this).width()-10) < (el.scrollWidth) ){
-    						//console.log($count2);
-    						//$(this).css("font-size",$count2+"px");
+    						
     						el.style.fontSize = $count2+"px";
     						$count2--;
     					}
@@ -336,22 +332,27 @@
 		}
 		
 		/********************************************************************
-		*Child Count
-		*Counts all children elements from the id's passed in for elements
-		*variables:none  only sets the variable $child_count
+		*isParent
+		*Checks to see if the parent nav is the parent 
+		*also assigns a id to nava elements if they do not have one already
 		*********************************************************************/
 		function isParent(el){
-		
+			$parent_count++;
+			//checks if parent array, if is a parent then loop through it
 			
-			//loops through array of possible div 
-			//only  ul, li, could expand to more  
-			//if($parent){
-				//call childCount
-				//childCount(){
-				
-				//}
-			//}	
+			if(el.id =="" || el.id == null){
+				$(el).attr("id","nav"+ $parent_count);
+			}
 			
+			$curr_parent_id = $("#"+el.id).parent().parent().attr("id") ;
+			console.log($("#"+el.id).parent().attr("id") + "   "+ $("#"+el.id).parent().parent().attr("id") + " "+ el.id);
+			if($curr_parent_id =="nav"){
+				console.log($curr_parent_id + "  parent ************* true");
+				return true;
+			}else{
+				console.log($curr_parent_id + "  parent ************* false");
+				return false;
+			}
 		
 		}
 		function isParent2(num){
